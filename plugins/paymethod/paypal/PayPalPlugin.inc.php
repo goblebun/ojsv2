@@ -113,6 +113,7 @@ class PayPalPlugin extends PaymethodPlugin {
 		$user =& Request::getUser();
 
 		$params = array(
+			'charset' => Config::getVar('i18n', 'client_charset'),
 			'business' => $this->getSetting($journal->getId(), 'selleraccount'),
 			'item_name' => $queuedPayment->getName(),
 			'item_description' => $queuedPayment->getDescription(),  // not a paypal parameter (PayPal uses item_name)
@@ -244,6 +245,14 @@ class PayPalPlugin extends PaymethodPlugin {
 								));
 								$mail->send();
 								exit();
+							}
+
+							// Update queued amount if amount set by user (e.g. donation)
+							if ($queuedAmount == 0 && $grantedAmount > 0) {
+								$queuedPaymentDao =& DAORegistry::getDAO('QueuedPaymentDAO');
+								$queuedPayment->setAmount($grantedAmount);
+								$queuedPayment->setCurrencyCode($grantedCurrency);
+								$queuedPaymentDao->updateQueuedPayment($queuedPaymentId, $queuedPayment);
 							}
 
 							// Fulfill the queued payment.

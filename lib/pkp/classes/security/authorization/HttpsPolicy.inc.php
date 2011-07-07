@@ -2,7 +2,7 @@
 /**
  * @file classes/security/authorization/HttpsPolicy.inc.php
  *
- * Copyright (c) 2000-2010 John Willinsky
+ * Copyright (c) 2000-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class HttpsPolicy
@@ -47,7 +47,7 @@ class HttpsPolicy extends AuthorizationPolicy {
 	function effect() {
 		// Check the request protocol
 		if ($this->_request->getProtocol() == 'https') {
-			return AUTHORIZATION_ALLOW;
+			return AUTHORIZATION_PERMIT;
 		} else {
 			return AUTHORIZATION_DENY;
 		}

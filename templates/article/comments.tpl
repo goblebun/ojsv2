@@ -1,7 +1,7 @@
 {**
  * comments.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Article View -- Comments component.
@@ -42,6 +42,7 @@
 <a href="{url page="comment" op="view" path=$article->getId()|to_array:$galleyId}" class="action" target="_parent">{translate key="comments.viewAllComments"}</a>
 
 {assign var=needsSeparator value=1}
+</div>
 {/if}{* $comments *}
 
 {if $postingAllowed}
@@ -52,5 +53,4 @@
 	{/if}
 	<a class="action" href="{url page="comment" op="add" path=$article->getId()|to_array:$galleyId}" target="_parent">{translate key="rt.addComment"}</a>
 {/if}
-</div>
 

@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/form/comment/CommentForm.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CommentForm
@@ -143,7 +143,7 @@ class CommentForm extends Form {
 			$paramArray = array(
 				'name' => $name,
 				'commentName' => $this->user->getFullName(),
-				'comments' => $commentText	
+				'comments' => String::html2text($commentText)
 			);
 
 			$email->sendWithParams($paramArray);

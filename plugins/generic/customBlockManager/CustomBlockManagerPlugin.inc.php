@@ -2,7 +2,7 @@
 /**
  * @file CustomBlockManagerPlugin.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @package plugins.generic.customBlockManager
@@ -24,8 +24,8 @@ class CustomBlockManagerPlugin extends GenericPlugin {
 	}
 
 	function register($category, $path) {
-		if (!Config::getVar('general', 'installed')) return false;
 		if (parent::register($category, $path)) {
+			if (!Config::getVar('general', 'installed') || defined('RUNNING_UPGRADE')) return true;
 			if ( $this->getEnabled() ) {
 				HookRegistry::register('PluginRegistry::loadCategory', array(&$this, 'callbackLoadCategory'));
 			}

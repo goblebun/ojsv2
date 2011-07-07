@@ -1,7 +1,7 @@
 {**
  * selectReviewer.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * List reviewers and give the ability to select a reviewer.
@@ -28,7 +28,7 @@ function sortSearch(heading, direction) {
 <div id="selectReviewer">
 <h3>{translate key="editor.article.selectReviewer"}</h3>
 <form name="submit" method="post" action="{url op="selectReviewer" path=$articleId}">
-	<input type="hidden" name="sort" value="id"/>
+	<input type="hidden" name="sort" value="name"/>
 	<input type="hidden" name="sortDirection" value="ASC"/>
 	<select name="searchField" size="1" class="selectMenu">
 		{html_options_translate options=$fieldOptions selected=$searchField}

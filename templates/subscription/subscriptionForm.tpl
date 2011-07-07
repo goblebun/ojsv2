@@ -1,7 +1,7 @@
 {**
  * subscriptionForm.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Common subscription fields
@@ -55,7 +55,6 @@ function chooseEndDate() {
 				break;
 			}
 		}
-		document.subscriptionForm.membership.value = months;
 	}
 }
 {/literal}
@@ -102,12 +101,11 @@ function chooseEndDate() {
 	</td>
 </tr>
 
-<script type="text/javascript">
-<!--
-
-// Select an end date that's appropriate for the default subscription type
-chooseEndDate();
-
-// -->
-</script>
-
+{* For new subscriptions, select end date for default subscription type *}
+{if !$subscriptionId}
+	<script type="text/javascript">
+	<!--
+	chooseEndDate();
+	// -->
+	</script>
+{/if}

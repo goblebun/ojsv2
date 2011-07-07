@@ -3,7 +3,7 @@
 /**
  * @file AnnouncementHandler.inc.php
  *
- * Copyright (c) 2000-2010 John Willinsky
+ * Copyright (c) 2000-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AnnouncementHandler
@@ -18,7 +18,7 @@ import('pages.manager.ManagerHandler');
 class PKPAnnouncementHandler extends ManagerHandler {
 	function PKPAnnouncementHandler() {
 		parent::ManagerHandler();
-		$this->addRoleAssignment(ROLE_ID_PRESS_MANAGER,
+		$this->addRoleAssignment(ROLE_ID_JOURNAL_MANAGER,
 				array('announcements', 'announcementTypes', 'createAnnouncement', 'createAnnouncementType',
 				'deleteAnnouncement', 'deleteAnnouncementType', 'editAnnouncement', 'editAnnouncementType',
 				'index', 'updateAnnouncement', 'updateAnnouncementType'));

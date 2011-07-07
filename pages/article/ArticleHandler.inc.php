@@ -3,7 +3,7 @@
 /**
  * @file ArticleHandler.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ArticleHandler
@@ -192,7 +192,7 @@ class ArticleHandler extends Handler {
 			Validation::isLoggedIn()))
 		));
 		$templateMgr->assign('enableComments', $enableComments);
-		$templateMgr->assign('postingLoginRequired', ($enableComments != COMMENTS_ANONYMOUS && !Validation::isLoggedIn()));
+		$templateMgr->assign('postingLoginRequired', ($enableComments != COMMENTS_UNAUTHENTICATED && !Validation::isLoggedIn()));
 		$templateMgr->assign('galleyId', $galleyId);
 		$templateMgr->assign('defineTermsContextId', isset($defineTermsContextId)?$defineTermsContextId:null);
 		$templateMgr->assign('comments', isset($comments)?$comments:null);
@@ -370,7 +370,7 @@ class ArticleHandler extends Handler {
 		}
 		if ($galley) $galleyDao->incrementViews($galley->getId());
 
-		if ($article && $galley && !HookRegistry::call('$this->downloadFile', array(&$article, &$galley))) {
+		if ($article && $galley && !HookRegistry::call('ArticleHandler::downloadFile', array(&$article, &$galley))) {
 			import('classes.file.ArticleFileManager');
 			$articleFileManager = new ArticleFileManager($article->getId());
 			$articleFileManager->downloadFile($galley->getFileId());
@@ -413,7 +413,7 @@ class ArticleHandler extends Handler {
 	 * @see lib/pkp/classes/handler/PKPHandler#validate()
 	 * @param $request Request
 	 * @param $articleId integer
-	 * @param $galleyId integer
+	 * @param $galleyId int or string
 	 */
 	function validate(&$request, $articleId, $galleyId = null) {
 		$router =& $request->getRouter();
@@ -447,7 +447,10 @@ class ArticleHandler extends Handler {
 		if (($article || $publishedArticle) && (($article && IssueAction::allowedPrePublicationAccess($journal, $article) || ($publishedArticle && IssueAction::allowedPrePublicationAccess($journal, $publishedArticle))))) {
 			$this->journal =& $journal;
 			$this->issue =& $issue;
-			$this->article =& $publishedArticle?$publishedArticle:$article;
+			if(isset($publishedArticle)) {
+				$this->article =& $publishedArticle;
+			} else $this->article =& $article;
+
 			return true;
 		}
 
@@ -457,14 +460,14 @@ class ArticleHandler extends Handler {
 			$isSubscribedDomain = IssueAction::subscribedDomain($journal, $issue->getId(), $articleId);
 
 			// Check if login is required for viewing.
-			if (!$isSubscribedDomain && !Validation::isLoggedIn() && $journal->getSetting('restrictArticleAccess') && isset($galleyId) && $galleyId != 0) {
+			if (!$isSubscribedDomain && !Validation::isLoggedIn() && $journal->getSetting('restrictArticleAccess') && isset($galleyId) && $galleyId) {
 				Validation::redirectLogin();
 			}
 
 			// bypass all validation if subscription based on domain or ip is valid
 			// or if the user is just requesting the abstract
 			if ( (!$isSubscribedDomain && $subscriptionRequired) &&
-			     (isset($galleyId) && $galleyId!=0) ) {
+			     (isset($galleyId) && $galleyId) ) {
 
 				// Subscription Access
 				$subscribedUser = IssueAction::subscribedUser($journal, $issue->getId(), $articleId);
@@ -480,9 +483,9 @@ class ArticleHandler extends Handler {
 						if ( $paymentManager->onlyPdfEnabled() ) {
 							$galleyDAO =& DAORegistry::getDAO('ArticleGalleyDAO');
 							if ($journal->getSetting('enablePublicGalleyId')) {
-								$galley =& $galleyDAO->getGalley($galleyId, $articleId);
-							} else {
 								$galley =& $galleyDAO->getGalleyByBestGalleyId($galleyId, $articleId);
+							} else {
+								$galley =& $galleyDAO->getGalley($galleyId, $articleId);
 							}
 							if ( $galley && !$galley->isPdfGalley() ) {
 								$this->journal =& $journal;

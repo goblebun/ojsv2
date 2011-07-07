@@ -3,7 +3,7 @@
 /**
  * @file CommentHandler.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CommentHandler
@@ -84,7 +84,7 @@ class CommentHandler extends Handler {
 		$publishedArticle =& $publishedArticleDao->getPublishedArticleByArticleId($articleId);
 
 		$parent =& $commentDao->getById($parentId, $articleId);
-		if (isset($parent) && $parent->getArticleId() != $articleId) {
+		if (isset($parent) && $parent->getSubmissionId() != $articleId) {
 			Request::redirect(null, null, 'view', array($articleId, $galleyId));
 		}
 

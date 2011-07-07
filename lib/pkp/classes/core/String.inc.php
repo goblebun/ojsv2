@@ -3,7 +3,7 @@
 /**
  * @file classes/core/String.inc.php
  *
- * Copyright (c) 2000-2010 John Willinsky
+ * Copyright (c) 2000-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class String
@@ -824,10 +824,10 @@ class String {
 
 		$words = explode(' ', $title);
 		foreach ($words as $key => $word) {
-			if ($key == 0 or !in_array(self::strtolower($word), $smallWords)) {
-				$words[$key] = ucfirst(self::strtolower($word));
+			if ($key == 0 or !in_array(String::strtolower($word), $smallWords)) {
+				$words[$key] = ucfirst(String::strtolower($word));
 			} else {
-				$words[$key] = self::strtolower($word);
+				$words[$key] = String::strtolower($word);
 			}
 		}
 

@@ -3,7 +3,7 @@
 /**
  * @file EruditExportDom.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EruditExportDom
@@ -74,7 +74,7 @@ class EruditExportDom {
 
 		$digPubNode =& XMLCustomWriter::createElement($doc, 'digpub');
 		XMLCustomWriter::appendChild($issueNode, $digPubNode);
-		XMLCustomWriter::createChildWithText($doc, $digPubNode, 'date', EruditExportDom::formatDate($issue->getDatePublished()));
+		if ($issue->getDatePublished()) XMLCustomWriter::createChildWithText($doc, $digPubNode, 'date', EruditExportDom::formatDate($issue->getDatePublished()));
 
 		/* --- Publisher & DTD --- */
 

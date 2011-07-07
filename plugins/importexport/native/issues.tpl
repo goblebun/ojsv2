@@ -1,7 +1,7 @@
 {**
  * issues.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * List of issues to potentially export
@@ -50,7 +50,7 @@ function toggleChecked() {
 	<tr valign="top">
 		<td><input type="checkbox" name="issueId[]" value="{$issue->getId()}"/></td>
 		<td><a href="{url page="issue" op="view" path=$issue->getId()}" class="action">{$issue->getIssueIdentification()|strip_unsafe_html|nl2br}</a></td>
-		<td>{$issue->getDatePublished()|date_format:"$dateFormatShort"}</td>
+		<td>{$issue->getDatePublished()|date_format:"$dateFormatShort"|default:"&mdash;"}</td>
 		<td>{$issue->getNumArticles()|escape}</td>
 		<td align="right"><a href="{plugin_url path="exportIssue"|to_array:$issue->getId()}" class="action">{translate key="common.export"}</a></td>
 	</tr>

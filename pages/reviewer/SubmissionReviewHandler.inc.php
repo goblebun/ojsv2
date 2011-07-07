@@ -3,7 +3,7 @@
 /**
  * @file SubmissionReviewHandler.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionReviewHandler
@@ -233,11 +233,16 @@ class SubmissionReviewHandler extends ReviewerHandler {
 	 * Save review form response
 	 * @param $args array
 	 */
-	function saveReviewFormResponse($args) {
-		$reviewId = isset($args[0]) ? $args[0] : 0;
-		$reviewFormId = isset($args[1]) ? $args[1] : 0;
+	function saveReviewFormResponse($args, $request) {
+		$reviewId = (int) array_shift($args);
+		$reviewFormId = (int) array_shift($args);
+		$this->validate($reviewId);
+
+		// For form errors (#6562)
+		Locale::requireComponents(array(LOCALE_COMPONENT_APPLICATION_COMMON));
+
 		if (ReviewerAction::saveReviewFormResponse($reviewId, $reviewFormId)) {
-					Request::redirect(null, null, 'submission', $reviewId);
+			$request->redirect(null, null, 'submission', $reviewId);
 		}
 	}
 

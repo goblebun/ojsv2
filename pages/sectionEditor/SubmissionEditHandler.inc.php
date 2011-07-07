@@ -3,7 +3,7 @@
 /**
  * @file SubmissionEditHandler.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionEditHandler
@@ -307,7 +307,7 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$completedPaymentDAO =& DAORegistry::getDAO('OJSCompletedPaymentDAO');
 
 		$publicationFeeEnabled = $paymentManager->publicationEnabled();
-		$templateMgr->assign('publicatonFeeEnabled',  $publicationFeeEnabled);
+		$templateMgr->assign('publicationFeeEnabled',  $publicationFeeEnabled);
 		if ( $publicationFeeEnabled ) {
 			$templateMgr->assign_by_ref('publicationPayment', $completedPaymentDAO->getPublicationCompletedPayment ( $journal->getId(), $articleId ));
 		}
@@ -867,24 +867,19 @@ class SubmissionEditHandler extends SectionEditorHandler {
 	/**
 	 * Remove cover page from article
 	 */
-	function removeCoverPage($args) {
+	function removeArticleCoverPage($args, &$request) {
 		$articleId = isset($args[0]) ? (int)$args[0] : 0;
-		$formLocale = $args[1];
 		$this->validate($articleId);
+
+		$formLocale = $args[1];
+		if (!Locale::isLocaleValid($formLocale)) {
+			$request->redirect(null, null, 'viewMetadata', $articleId);
+		}
+
 		$submission =& $this->submission;
-
-		import('classes.file.PublicFileManager');
-		$publicFileManager = new PublicFileManager();
-		$publicFileManager->removeJournalFile($journal->getId(),$submission->getFileName($formLocale));
-		$submission->setFileName('', $formLocale);
-		$submission->setOriginalFileName('', $formLocale);
-		$submission->setWidth('', $formLocale);
-		$submission->setHeight('', $formLocale);
-
-		$articleDao =& DAORegistry::getDAO('ArticleDAO');
-		$articleDao->updateArticle($submission);
-
-		Request::redirect(null, null, 'viewMetadata', $articleId);
+		if (SectionEditorAction::removeArticleCoverPage($submission, $formLocale)) {
+			$request->redirect(null, null, 'viewMetadata', $articleId);
+		}
 	}
 
 	//
@@ -1013,11 +1008,6 @@ class SubmissionEditHandler extends SectionEditorHandler {
 					// The conditions are met for being able
 					// to send a file to copyediting.
 					SectionEditorAction::setCopyeditFile($submission, $file[0], $file[1]);
-
-					$signoff = $signoffDao->build('SIGNOFF_COPYEDITING_INITIAL', ASSOC_TYPE_ARTICLE, $submission->getId());
-					$signoff->setFileId($file[0]);
-					$signoff->setFileRevision($file[1]);
-					$signoffDao->updateObject($signoff);
 				}
 				$redirectTarget = 'submissionEditing';
 			}
@@ -2306,7 +2296,7 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$this->setupTemplate(true, $articleId, 'editing');
 
 		$signoffDao =& DAORegistry::getDAO('SignoffDAO');
-		$signoff = $signoffDao->getBySymbolic('SIGNOFF_PROOFREADING_LAYOUT', ASSOC_TYPE_ARTICLE, $articleId);
+		$signoff = $signoffDao->build('SIGNOFF_PROOFREADING_LAYOUT', ASSOC_TYPE_ARTICLE, $articleId);
 		$signoff->setDateNotified(Core::getCurrentDate());
 		$signoff->setDateUnderway(null);
 		$signoff->setDateCompleted(null);
@@ -2336,13 +2326,15 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 	/**
 	 * Schedule/unschedule an article for publication.
+	 * @param $args array
+	 * @param $request object
 	 */
-	function scheduleForPublication($args) {
+	function scheduleForPublication($args, $request) {
 		$articleId = (int) array_shift($args);
-		$issueId = (int) Request::getUserVar('issueId');
+		$issueId = (int) $request->getUserVar('issueId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$submission =& $this->submission;
 
 		$sectionEditorSubmissionDao =& DAORegistry::getDAO('SectionEditorSubmissionDAO');
@@ -2400,22 +2392,46 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 		$sectionEditorSubmissionDao->updateSectionEditorSubmission($submission);
 
-		Request::redirect(null, null, 'submissionEditing', array($articleId), null, 'scheduling');
+		$request->redirect(null, null, 'submissionEditing', array($articleId), null, 'scheduling');
+	}
+
+	/**
+	 * Set the publication date for a published article
+	 * @param $args array
+	 * @param $request object
+	 */
+	function setDatePublished($args, $request) {
+		$articleId = (int) array_shift($args);
+		$issueId = (int) $request->getUserVar('issueId');
+		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
+
+		$journal =& $request->getJournal();
+		$submission =& $this->submission;
+
+		$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
+		$publishedArticle =& $publishedArticleDao->getPublishedArticleByArticleId($articleId);
+		if ($publishedArticle) {
+			$datePublished = $request->getUserDateVar('datePublished');
+			$publishedArticle->setDatePublished($datePublished);
+			$publishedArticleDao->updatePublishedArticle($publishedArticle);
+		}
+		$request->redirect(null, null, 'submissionEditing', array($articleId), null, 'scheduling');
 	}
 
 	/**
 	 * Payments
 	 */
 
-	function waiveSubmissionFee($args) {
+	function waiveSubmissionFee($args, $request) {
 		$articleId = (int) array_shift($args);
-		$markAsPaid = Request::getUserVar('markAsPaid');
+		$markAsPaid = $request->getUserVar('markAsPaid');
 
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 		$submission =& $this->submission;
 		import('classes.payment.ojs.OJSPaymentManager');
 		$paymentManager =& OJSPaymentManager::getManager();
-		$user =& Request::getUser();
+		$user =& $request->getUser();
+		$journal =& $request->getJournal();
 
 		$queuedPayment =& $paymentManager->createQueuedPayment(
 			$journal->getId(),
@@ -2430,7 +2446,7 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 		// Since this is a waiver, fulfill the payment immediately
 		$paymentManager->fulfillQueuedPayment($queuedPayment, $markAsPaid?'ManualPayment':'Waiver');
-		Request::redirect(null, null, 'submission', array($articleId));
+		$request->redirect(null, null, 'submission', array($articleId));
 	}
 
 	function waiveFastTrackFee($args) {

@@ -3,7 +3,7 @@
 /**
  * @file classes/install/Installer.inc.php
  *
- * Copyright (c) 2000-2010 John Willinsky
+ * Copyright (c) 2000-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Installer
@@ -290,6 +290,9 @@ class Installer {
 	function updateVersion() {
 		if ($this->newVersion->compare($this->currentVersion) > 0) {
 			if ($this->getParam('manualInstall')) {
+				// Mark old version as no longer current
+				$this->executeSQL(sprintf('UPDATE versions SET current = 0 WHERE product = %s', $this->dbconn->qstr($this->currentVersion->getProduct())));
+
 				// FIXME Would be better to have a mode where $dbconn->execute() saves the query
 				return $this->executeSQL(sprintf('INSERT INTO versions (major, minor, revision, build, date_installed, current, product_type, product, product_class_name, lazy_load, sitewide) VALUES (%d, %d, %d, %d, NOW(), 1, %s, %s, %s, %d, %d)', $this->newVersion->getMajor(), $this->newVersion->getMinor(), $this->newVersion->getRevision(), $this->newVersion->getBuild(), $this->dbconn->qstr($this->newVersion->getProductType()), $this->dbconn->qstr($this->newVersion->getProduct()), $this->dbconn->qstr($this->newVersion->getProductClassName()), ($this->newVersion->getLazyLoad()?1:0), ($this->newVersion->getSitewide()?1:0)));
 			} else {
@@ -640,7 +643,7 @@ class Installer {
 	 */
 	function installFilterTemplates() {
 		// Filters are supported on PHP5+ only.
-		if (!checkPhpVersion('5.0.0')) return false;
+		if (!checkPhpVersion('5.0.0')) return true;
 
 		$filterDao =& DAORegistry::getDAO('FilterDAO');
 		$filtersToBeInstalled = array(
@@ -815,6 +818,39 @@ class Installer {
 			if ($column->name == $columnName) return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Insert or update plugin data in versions
+	 * and plugin_settings tables.
+	 * @return boolean
+	 */
+	function addPluginVersions() {
+		$versionDao =& DAORegistry::getDAO('VersionDAO');
+		import('lib.pkp.classes.site.VersionCheck');
+		$categories = PluginRegistry::getCategories();
+		foreach ($categories as $category) {
+			PluginRegistry::loadCategory($category);
+			$plugins = PluginRegistry::getPlugins($category);
+			if (is_array($plugins)) {
+				foreach ($plugins as $plugin) {
+					$versionFile = $plugin->getPluginPath() . '/version.xml';
+
+					if (FileManager::fileExists($versionFile)) {
+						$versionInfo =& VersionCheck::parseVersionXML($versionFile);
+						$pluginVersion = $versionInfo['version'];
+					} else {
+						$pluginVersion = new Version(
+							1, 0, 0, 0, Core::getCurrentDate(), 1,
+							'plugins.'.$category, basename($plugin->getPluginPath()), '', 0
+						);
+					}
+					$versionDao->insertVersion($pluginVersion, true);
+				}
+			}
+		}
+
+		return true;
 	}
 }
 

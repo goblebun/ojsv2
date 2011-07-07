@@ -3,7 +3,7 @@
 /**
  * @file classes/oai/ojs/OAIDAO.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OAIDAO
@@ -348,6 +348,8 @@ class OAIDAO extends DAO {
 		$record->datestamp = OAIUtils::UTCDate(strtotime($this->datetimeFromDB($row['last_modified'])));
 		$record->sets = array($journal->getPath() . ':' . $section->getLocalizedAbbrev());
 
+		HookRegistry::call('OAIDAO::_returnRecordFromRow', array(&$record, &$row));
+		
 		return $record;
 	}
 
@@ -366,6 +368,8 @@ class OAIDAO extends DAO {
 		$record->datestamp = OAIUtils::UTCDate(strtotime($this->datetimeFromDB($row['last_modified'])));
 		$record->sets = array($journal->getPath() . ':' . $section->getLocalizedAbbrev());
 
+		HookRegistry::call('OAIDAO::_returnIdentifierFromRow', array(&$record, &$row));
+		
 		return $record;
 	}
 

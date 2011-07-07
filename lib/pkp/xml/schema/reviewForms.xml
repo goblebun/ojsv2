@@ -4,7 +4,7 @@
 <!--
   * reviewForms.xml
   *
-  * Copyright (c) 2000-2010 John Willinsky
+  * Copyright (c) 2000-2011 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Review Form schema in XML.
@@ -24,12 +24,10 @@
 			<AUTOINCREMENT/>
 		</field>
 		<field name="assoc_type" type="I8">
-			<NOTNULL/>
-			<DEFAULT VALUE="0"/>
+			<!-- NOTNULL constraint omitted for upgrade purposes -->
 		</field>
 		<field name="assoc_id" type="I8">
-			<NOTNULL/>
-			<DEFAULT VALUE="0"/>
+			<!-- NOTNULL constraint omitted for upgrade purposes -->
 		</field>
 		<field name="seq" type="F" />
 		<field name="is_active" type="I1" />

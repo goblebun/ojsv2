@@ -1,7 +1,7 @@
 {**
  * articleContext.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Prompt for "context" for article import: section and issue
@@ -44,7 +44,7 @@
 		<td><input {if !$notFirst}checked="checked" {/if}name="issueId" type="radio" value="{$issue->getId()}"/></td>
 		{assign var=notFirst value=1}
 		<td><a href="{url page="issue" op="view" path=$issue->getId()}" class="action">{$issue->getIssueIdentification()|strip_unsafe_html|nl2br}</a></td>
-		<td>{$issue->getDatePublished()|date_format:"$dateFormatShort"}</td>
+		<td>{$issue->getDatePublished()|date_format:"$dateFormatShort"|default:"&mdash;"}</td>
 		<td>{$issue->getNumArticles()|escape}</td>
 	</tr>
 	<tr>

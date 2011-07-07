@@ -1,7 +1,7 @@
 {**
  * rss.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * RSS feed template
@@ -82,9 +82,11 @@
 				<dc:creator>{$author->getFullName()|strip|escape:"html"}</dc:creator>
 			{/foreach}
 
-			<dc:date>{$article->getDatePublished()|date_format:"%Y-%m-%d"}</dc:date>
+			{if $article->getDatePublished()}
+				<dc:date>{$article->getDatePublished()|date_format:"%Y-%m-%d"}</dc:date>
+				<prism:publicationDate>{$article->getDatePublished()|date_format:"%Y-%m-%d"}</prism:publicationDate>
+			{/if}
 			<prism:volume>{$issue->getVolume()|escape}</prism:volume>
-			<prism:publicationDate>{$article->getDatePublished()|date_format:"%Y-%m-%d"}</prism:publicationDate>
 		</item>
 	{/foreach}{* articles *}
 {/foreach}{* sections *}

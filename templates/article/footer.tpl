@@ -1,14 +1,14 @@
 {**
  * footer.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Article View -- Footer component.
  *}
 
-<!-- start AddThis -->
 {if $sharingEnabled}
+<!-- start AddThis -->
 	{if isset($sharingDropDownMenu)}
 		{if isset($sharingUserName)}
 			<script type="text/javascript">
@@ -33,14 +33,11 @@
 				<img src="{$sharingButtonUrl}" width="{$sharingButtonWidth}" height="{$sharingButtonHeight}" border="0" alt="Bookmark and Share" style="border:0;padding:0" />
 		</a>
 	{/if}
-{/if}
 <!-- end AddThis -->
+{/if}
 
 {if $currentJournal && $currentJournal->getSetting('includeCreativeCommons')}
-	<br /><br />
-	<a rel="license" target="_new" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
-	<br />
-	This <span xmlns:dc="http://purl.org/dc/elements/1.1/" href="http://purl.org/dc/dcmitype/Text" rel="dc:type">work</span> is licensed under a <a target="_new" rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a>.
+{translate key="common.ccLicense"}
 {/if}
 
 {if $pageFooter}
@@ -48,11 +45,9 @@
 {$pageFooter}
 {/if}
 {call_hook name="Templates::Article::Footer::PageFooter"}
-</div>
-
-</div>
-</div>
-</div>
+</div><!-- content -->
+</div><!-- main -->
+</div><!-- body -->
 
 {if $defineTermsContextId}
 <script type="text/javascript">
@@ -84,7 +79,7 @@
 
 {get_debug_info}
 {if $enableDebugStats}{include file=$pqpTemplate}{/if}
-
+</div> <!-- container -->
 </body>
 </html>
 

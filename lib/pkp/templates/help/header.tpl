@@ -1,7 +1,7 @@
 {**
  * header.tpl
  *
- * Copyright (c) 2000-2010 John Willinsky
+ * Copyright (c) 2000-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Common header for help pages.
@@ -24,7 +24,7 @@
 	{/foreach}
 
 	<!-- Base Jquery -->
-	{if $allowCDN}<script src="http://www.google.com/jsapi"></script>
+	{if $allowCDN}<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	<script type="text/javascript">{literal}
 		// Provide a local fallback if the CDN cannot be reached
 		if (typeof google == 'undefined') {

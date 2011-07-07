@@ -1,6 +1,6 @@
 <?php
 	// ================================================
-	// PHP image browser - iBrowser 
+	// PHP image browser - iBrowser
 	// ================================================
 	// iBrowser dialog - special characters
 	// ================================================
@@ -14,9 +14,9 @@
 
 	//-------------------------------------------------------------------------
 	// include configuration settings
-	include '../config/config.inc.php';	
-	include '../langs/lang.class.php';	
-	// language settings	
+	include '../config/config.inc.php';
+	include '../langs/lang.class.php';
+	// language settings
 	$l = (@$_REQUEST['lang'] ? new PLUG_Lang(@$_REQUEST['lang']) : new PLUG_Lang($cfg['lang']));
 	$l->setBlock('symbols');
 ?>
@@ -35,8 +35,8 @@
 <script language="javascript" type="text/javascript" src="../scripts/resizeDialog.js"></script>
 <script language="javascript" type="text/javascript">
 <!--
-	
-	var charmap = new Array();	
+
+	var charmap = new Array();
 	charmap = [
 		['&nbsp;',    '&#160;',  true, 'no-break space'],
 		['&amp;',     '&#38;',   true, 'ampersand'],
@@ -334,21 +334,21 @@
 // ============================================================
 // = insert current symbol V 1.0, date: 03/31/2005            =
 // ============================================================
-    function insertChar(chr) {        
+    function insertChar(chr) {
 		var args = window.dialogArguments;
 		var rArgs = {};
 		rArgs.elm = args.elm; // passing calling object/element back to parent
-		rArgs.chr = '\&#' + chr + ';'		
-		window.returnValue = rArgs;		
+		rArgs.chr = '\&#' + chr + ';'
+		window.returnValue = rArgs;
 		window.close();
-		if (iBrowser.isGecko) {				
+		if (iBrowser.isGecko) {
 			<?php
 				if (!empty($_REQUEST['callback'])) {
-					echo "opener." . $_REQUEST['callback'] . "('" . "',this);\n";					
+					echo "opener." . $_REQUEST['callback'] . "('" . "',this);\n";
 				}
 			?>
-		}		
-    }	
+		}
+    }
 // ============================================================
 // = preview current symbol V 1.0, date: 03/31/2005           =
 // ============================================================
@@ -367,12 +367,12 @@
         elmB.innerHTML = '&amp;' + codeA;
         elmA.innerHTML = '&amp;' + codeB;
         elmN.innerHTML = codeN;
-    }	
+    }
 // ============================================================
 // = symbols init V 1.0, date: 03/31/2005                     =
 // ============================================================
-	function init() {		
-		var args = window.dialogArguments;		
+	function init() {
+		var args = window.dialogArguments;
 		iBrowser = args.iBrowser;
 		resizeDialogToContent();
 		window.focus();

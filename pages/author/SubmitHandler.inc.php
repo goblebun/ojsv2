@@ -3,7 +3,7 @@
 /**
  * @file SubmitHandler.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmitHandler
@@ -163,19 +163,15 @@ class SubmitHandler extends AuthorHandler {
 					$article =& $articleDao->getArticle($articleId);
 					$roleDao =& DAORegistry::getDAO('RoleDAO');
 					$notificationUsers = array();
-					$journalManagers = $roleDao->getUsersByRoleId(ROLE_ID_JOURNAL_MANAGER);
-					$allUsers = $journalManagers->toArray();
 					$editors = $roleDao->getUsersByRoleId(ROLE_ID_EDITOR);
-					array_merge($allUsers, $editors->toArray());
-					foreach ($allUsers as $user) {
-						$notificationUsers[] = array('id' => $user->getId());
-					}
-					foreach ($notificationUsers as $userRole) {
+					$notifyUsers = $editors->toArray();
+					while ($editor =& $editors->next()) {
 						$url = $request->url(null, 'editor', 'submission', $articleId);
 						$notificationManager->createNotification(
-							$userRole['id'], 'notification.type.articleSubmitted',
+							$editor->getId(), 'notification.type.articleSubmitted',
 							$article->getLocalizedTitle(), $url, 1, NOTIFICATION_TYPE_ARTICLE_SUBMITTED
 						);
+						unset($editor);
 					}
 
 					$journal =& $request->getJournal();

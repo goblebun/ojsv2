@@ -4,7 +4,7 @@
 <!--
   * @file plugins/generic/booksForReview/locale/en_US/locale.xml
   *
-  * Copyright (c) 2003-2010 John Willinsky
+  * Copyright (c) 2003-2011 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Books for review plugin localization strings for the en_US (U.S. English) locale.
@@ -40,7 +40,6 @@
 	<message key="plugins.generic.booksForReview.editor.booksForReviewSubmitted">Books For Review - Submitted</message>
 	<message key="plugins.generic.booksForReview.editor.create">Create Book for Review</message>
 	<message key="plugins.generic.booksForReview.editor.createNewUser">Create New User</message>
-	<message key="plugins.generic.booksForReview.editor.edit">Edit Book for Review</message>
 	<message key="plugins.generic.booksForReview.editor.editBookForReviewMetadata">Edit Book Metadata</message>
 	<message key="plugins.generic.booksForReview.editor.delete">Delete Book for Review</message>
 	<message key="plugins.generic.booksForReview.editor.bookDetails">Book Details</message>

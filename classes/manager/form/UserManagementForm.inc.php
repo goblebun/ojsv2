@@ -3,7 +3,7 @@
 /**
  * @file classes/manager/form/UserManagementForm.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserManagementForm
@@ -174,7 +174,7 @@ class UserManagementForm extends Form {
 					'country' => $user->getCountry(),
 					'biography' => $user->getBiography(null), // Localized
 					'existingInterests' => $existingInterests,
-					'currentInterests' => $currentInterests,
+					'interestsKeywords' => $currentInterests,
 					'gossip' => $user->getGossip(null), // Localized
 					'userLocales' => $user->getLocales()
 				);
@@ -219,6 +219,7 @@ class UserManagementForm extends Form {
 			'country',
 			'biography',
 			'interestsKeywords',
+			'interests',
 			'gossip',
 			'userLocales',
 			'generatePassword',
@@ -236,6 +237,12 @@ class UserManagementForm extends Form {
 		if ($this->getData('username') != null) {
 			// Usernames must be lowercase
 			$this->setData('username', strtolower($this->getData('username')));
+		}
+
+		$interests = $this->getData('interestsKeywords');
+		if ($interests != null && is_array($interests)) {
+			// The interests are coming in encoded -- Decode them for DB storage
+			$this->setData('interestsKeywords', array_map('urldecode', $interests));
 		}
 	}
 
@@ -352,21 +359,6 @@ class UserManagementForm extends Form {
 				}
 			}
 
-			// Add reviewing interests to interests table
-			$interestDao =& DAORegistry::getDAO('InterestDAO');
-			$interests = Request::getUserVar('interestsKeywords');
-			$interestTextOnly = Request::getUserVar('interests');
-			if(!empty($interestsTextOnly)) {
-				// If JS is disabled, this will be the input to read
-				$interestsTextOnly = explode(",", $interestTextOnly);
-			} else $interestsTextOnly = null;
-			if ($interestsTextOnly && !isset($interests)) {
-				$interests = $interestsTextOnly;
-			} elseif (isset($interests) && !is_array($interests)) {
-				$interests = array($interests);
-			}
-			$interestDao->insertInterests($interests, $user->getId(), true);
-
 			if ($sendNotify) {
 				// Send welcome email to user
 				import('classes.mail.MailTemplate');
@@ -377,6 +369,10 @@ class UserManagementForm extends Form {
 				$mail->send();
 			}
 		}
+
+		import('lib.pkp.classes.user.InterestManager');
+		$interestManager = new InterestManager();
+		$interestManager->insertInterests($userId, $this->getData('interestsKeywords'), $this->getData('interests'));
 	}
 }
 

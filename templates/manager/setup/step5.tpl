@@ -1,7 +1,7 @@
 {**
  * step5.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Step 5 of journal setup.
@@ -72,17 +72,17 @@ function prepBlockFields() {
 
 	theForm.elements["blockSelectLeft"].value = "";
 	for (i=0; i<theForm.blockSelectLeftWidget.options.length; i++) {
-		theForm.blockSelectLeft.value += theForm.blockSelectLeftWidget.options[i].value + " ";
+		theForm.blockSelectLeft.value += encodeURI(theForm.blockSelectLeftWidget.options[i].value) + " ";
 	}
 
 	theForm.blockSelectRight.value = "";
 	for (i=0; i<theForm.blockSelectRightWidget.options.length; i++) {
-		theForm.blockSelectRight.value += theForm.blockSelectRightWidget.options[i].value + " ";
+		theForm.blockSelectRight.value += encodeURI(theForm.blockSelectRightWidget.options[i].value) + " ";
 	}
 
 	theForm.blockUnselected.value = "";
 	for (i=0; i<theForm.blockUnselectedWidget.options.length; i++) {
-		theForm.blockUnselected.value += theForm.blockUnselectedWidget.options[i].value + " ";
+		theForm.blockUnselected.value += encodeURI(theForm.blockUnselectedWidget.options[i].value) + " ";
 	}
 	return true;
 }

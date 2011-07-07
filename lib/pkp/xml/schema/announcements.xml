@@ -4,7 +4,7 @@
 <!--
   * groups.xml
   *
-  * Copyright (c) 2000-2010 John Willinsky
+  * Copyright (c) 2000-2011 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Groups schema in XML.
@@ -24,7 +24,7 @@
 			<AUTOINCREMENT/>
 		</field>
 		<field name="assoc_type" type="I2">
-			<NOTNULL/>
+			<!-- NOT NULL not included for upgrade purposes -->
 		</field>
 		<field name="assoc_id" type="I8">
 			<NOTNULL/>
@@ -79,7 +79,7 @@
 			<AUTOINCREMENT/>
 		</field>
 		<field name="assoc_type" type="I2">
-			<NOTNULL/>
+			<!-- NOT NULL not included for upgrade purposes -->
 		</field>
 		<field name="assoc_id" type="I8">
 			<NOTNULL/>

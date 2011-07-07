@@ -3,7 +3,7 @@
 /**
  * @file classes/install/Install.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Install
@@ -126,29 +126,6 @@ class Install extends PKPInstall {
 			$emailTemplateDao->installEmailTemplates($emailTemplateDao->getMainEmailTemplatesFilename());
 			foreach ($this->installedLocales as $locale) {
 				$emailTemplateDao->installEmailTemplateData($emailTemplateDao->getMainEmailTemplateDataFilename($locale));
-			}
-
-			// Add initial plugin data to versions table
-			$versionDao =& DAORegistry::getDAO('VersionDAO');
-			import('lib.pkp.classes.site.VersionCheck');
-			$categories = PluginRegistry::getCategories();
-			foreach ($categories as $category) {
-				PluginRegistry::loadCategory($category);
-				$plugins = PluginRegistry::getPlugins($category);
-				foreach ($plugins as $plugin) {
-					$versionFile = $plugin->getPluginPath() . '/version.xml';
-
-					if (FileManager::fileExists($versionFile)) {
-						$versionInfo =& VersionCheck::parseVersionXML($versionFile);
-						$pluginVersion = $versionInfo['version'];
-					}  else {
-						$pluginVersion = new Version(
-							1, 0, 0, 0, Core::getCurrentDate(), 1,
-							'plugins.'.$category, basename($plugin->getPluginPath()), '', 0, $plugin->isSitePlugin()
-						);
-					}
-					$versionDao->insertVersion($pluginVersion, true);
-				}
 			}
 
 			// Install filters and filter templates.

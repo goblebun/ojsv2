@@ -7,7 +7,7 @@
 /**
  * @file classes/mail/Mail.inc.php
  *
- * Copyright (c) 2000-2010 John Willinsky
+ * Copyright (c) 2000-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Mail
@@ -397,7 +397,7 @@ class Mail extends DataObject {
 			$attachments = $this->getAttachments();
 			foreach ($attachments as $attachment) {
 				$mailBody .= '--'.$mimeBoundary.MAIL_EOL;
-				$mailBody .= 'Content-Type: '.str_replace('"', '', $attachment['filename']).'; name="'.$attachment['filename'].'"'.MAIL_EOL;
+				$mailBody .= 'Content-Type: '.$attachment['content-type'].'; name="'.str_replace('"', '', $attachment['filename']).'"'.MAIL_EOL;
 				$mailBody .= 'Content-transfer-encoding: base64'.MAIL_EOL;
 				$mailBody .= 'Content-disposition: '.$attachment['disposition'].MAIL_EOL.MAIL_EOL;
 				$mailBody .= $attachment['content'].MAIL_EOL.MAIL_EOL;

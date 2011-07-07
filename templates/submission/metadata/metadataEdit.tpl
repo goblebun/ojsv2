@@ -1,7 +1,7 @@
 {**
  * metadataEdit.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Form for changing metadata of an article (used in MetadataForm)
@@ -388,6 +388,8 @@ function moveAuthor(dir, authorIndex) {
 </div>
 
 <div class="separator"></div>
+
+{call_hook name="Templates::Submission::MetadataEdit::AdditionalMetadata"}
 
 {if $journalSettings.metaCitations}
 <div id="metaCitations">

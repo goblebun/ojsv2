@@ -3,7 +3,7 @@
 /**
  * @file classes/article/PublishedArticle.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PublishedArticle
@@ -246,8 +246,9 @@ class PublishedArticle extends Article {
 
 	/**
 	 * Get a DOI for this article.
+	 * @var $preview boolean If true, generate a non-persisted preview only.
 	 */
-	function getDOI() {
+	function getDOI($preview = false) {
 		// If we already have an assigned DOI, use it.
 		$storedDOI = $this->getStoredDOI();
 		if ($storedDOI) return $storedDOI;
@@ -294,10 +295,12 @@ class PublishedArticle extends Article {
 				$doi = $doiPrefix . '/' . String::strtolower($journal->getLocalizedSetting('initials')) . '.v' . $issue->getVolume() . 'i' . $issue->getNumber() . '.' . $this->getArticleId();
 		}
 
-		// Save the generated DOI
-		$this->setStoredDOI($doi);
-		$articleDao =& DAORegistry::getDAO('ArticleDAO');
-		$articleDao->changeDOI($this->getId(), $doi);
+		if (!$preview) {
+			// Save the generated DOI
+			$this->setStoredDOI($doi);
+			$articleDao =& DAORegistry::getDAO('ArticleDAO');
+			$articleDao->changeDOI($this->getId(), $doi);
+		}
 
 		return $doi;
 	}

@@ -3,7 +3,7 @@
 /**
  * @file PKPLoginHandler.inc.php
  *
- * Copyright (c) 2000-2010 John Willinsky
+ * Copyright (c) 2000-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPLoginHandler
@@ -50,6 +50,14 @@ class PKPLoginHandler extends Handler {
 		$templateMgr->assign('remember', Request::getUserVar('remember'));
 		$templateMgr->assign('source', Request::getUserVar('source'));
 		$templateMgr->assign('showRemember', Config::getVar('general', 'session_lifetime') > 0);
+
+		// For force_login_ssl with base_url[...]: make sure SSL used for login form
+		$loginUrl = $this->_getLoginUrl();
+		if (Config::getVar('security', 'force_login_ssl')) {
+			$loginUrl = String::regexp_replace('/^http:/', 'https:', $loginUrl);
+		}
+		$templateMgr->assign('loginUrl', $loginUrl);
+
 		$templateMgr->display('user/login.tpl');
 	}
 
@@ -104,19 +112,21 @@ class PKPLoginHandler extends Handler {
 
 		$user = Validation::login(Request::getUserVar('username'), Request::getUserVar('password'), $reason, Request::getUserVar('remember') == null ? false : true);
 		if ($user !== false) {
-			if (Config::getVar('security', 'force_login_ssl') && !Config::getVar('security', 'force_ssl')) {
-				// Redirect back to HTTP if forcing SSL for login only
-				PKPRequest::redirectNonSSL();
-
-			} else if ($user->getMustChangePassword()) {
+			if ($user->getMustChangePassword()) {
 				// User must change their password in order to log in
 				Validation::logout();
 				PKPRequest::redirect(null, null, 'changePassword', $user->getUsername());
 
 			} else {
 				$source = Request::getUserVar('source');
+				$redirectNonSsl = Config::getVar('security', 'force_login_ssl') && !Config::getVar('security', 'force_ssl');
 				if (isset($source) && !empty($source)) {
-					PKPRequest::redirectUrl(Request::getProtocol() . '://' . Request::getServerHost() . $source, false);
+					PKPRequest::redirectUrl(
+						($redirectNonSsl?'http':Request::getProtocol()) . '://' . Request::getServerHost() . $source,
+						false
+					);
+				} elseif ($redirectNonSsl) {
+					PKPRequest::redirectNonSSL();
 				} else {
 					Request::redirectHome();
 				}

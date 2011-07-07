@@ -7,7 +7,7 @@
 /**
  * @file classes/plugins/PKPPlugin.inc.php
  *
- * Copyright (c) 2000-2010 John Willinsky
+ * Copyright (c) 2000-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPPlugin
@@ -454,6 +454,7 @@ class PKPPlugin {
 		if ($sql) {
 			$result = $installer->executeSQL($sql);
 		} else {
+			Locale::requireComponents(array(LOCALE_COMPONENT_PKP_INSTALLER));
 			$installer->setError(INSTALLER_ERROR_DB, str_replace('{$file}', $this->getInstallDataFile(), Locale::translate('installer.installParseDBFileError')));
 			$result = false;
 		}
@@ -543,11 +544,18 @@ class PKPPlugin {
 
 		$emailTemplateDao =& DAORegistry::getDAO('EmailTemplateDAO');
 		$sql = $emailTemplateDao->installEmailTemplates($this->getInstallEmailTemplatesFile(), true, null, true);
-		if ($sql) {
-			$result = $installer->executeSQL($sql);
-		} else {
+
+		if ($sql === false) {
+			// The template file seems to be invalid.
 			$installer->setError(INSTALLER_ERROR_DB, str_replace('{$file}', $this->getInstallDataFile(), Locale::translate('installer.installParseEmailTemplatesFileError')));
 			$result = false;
+		} else {
+			// Are there any yet uninstalled email templates?
+			assert(is_array($sql));
+			if (!empty($sql)) {
+				// Install templates.
+				$result = $installer->executeSQL($sql);
+			}
 		}
 		return false;
 	}

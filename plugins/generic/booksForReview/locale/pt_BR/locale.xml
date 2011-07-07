@@ -4,7 +4,7 @@
 <!--
   * @file plugins/generic/booksForReview/locale/en_US/locale.xml
   *
-  * Copyright (c) 2003-2010 John Willinsky
+  * Copyright (c) 2003-2011 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Books for review plugin localization strings for the en_US (U.S. English) locale.
@@ -56,7 +56,6 @@
 	<message key="plugins.generic.booksForReview.editor.confirmRemove">Deseja realmente excluir este autor e o histórico desta revisão de literatura?</message>
 	<message key="plugins.generic.booksForReview.editor.selectSubmission"><![CDATA[Escolha&nbsp;a&nbsp;submissão]]></message>
 	<message key="plugins.generic.booksForReview.editor.select">Escolha</message>
-	<message key="plugins.generic.booksForReview.editor.edit">Edit</message>
 	<message key="plugins.generic.booksForReview.editor.submission">Submissão</message>
 	<message key="plugins.generic.booksForReview.editor.bookReviewer">Avaliador</message>
 	<message key="plugins.generic.booksForReview.editor.assignBookReviewer">Designar</message>

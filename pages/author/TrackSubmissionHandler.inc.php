@@ -3,7 +3,7 @@
 /**
  * @file TrackSubmissionHandler.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class TrackSubmissionHandler
@@ -220,7 +220,7 @@ class TrackSubmissionHandler extends AuthorHandler {
 	 * Edit a supplementary file.
 	 * @param $args array ($articleId, $suppFileId)
 	 */
-	function editSuppFile($args) {
+	function editSuppFile($args, &$request) {
 		$articleId = isset($args[0]) ? (int) $args[0] : 0;
 		$suppFileId = isset($args[1]) ? (int) $args[1] : 0;
 		$this->validate($articleId);
@@ -231,7 +231,8 @@ class TrackSubmissionHandler extends AuthorHandler {
 
 			import('classes.submission.form.SuppFileForm');
 
-			$submitForm = new SuppFileForm($authorSubmission, $suppFileId);
+			$journal =& $request->getJournal();
+			$submitForm = new SuppFileForm($authorSubmission, $journal, $suppFileId);
 
 			if ($submitForm->isLocaleResubmit()) {
 				$submitForm->readInputData();
@@ -270,7 +271,7 @@ class TrackSubmissionHandler extends AuthorHandler {
 	 * Save a supplementary file.
 	 * @param $args array ($suppFileId)
 	 */
-	function saveSuppFile($args) {
+	function saveSuppFile($args, &$request) {
 		$articleId = Request::getUserVar('articleId');
 		$this->validate($articleId);
 		$authorSubmission =& $this->submission;
@@ -281,7 +282,8 @@ class TrackSubmissionHandler extends AuthorHandler {
 
 			import('classes.submission.form.SuppFileForm');
 
-			$submitForm = new SuppFileForm($authorSubmission, $suppFileId);
+			$journal =& $request->getJournal();
+			$submitForm = new SuppFileForm($authorSubmission, $journal, $suppFileId);
 			$submitForm->readInputData();
 
 			if ($submitForm->validate()) {
@@ -368,12 +370,17 @@ class TrackSubmissionHandler extends AuthorHandler {
 	/**
 	 * Remove cover page from article
 	 */
-	function removeCoverPage($args) {
+	function removeArticleCoverPage($args, &$request) {
 		$articleId = isset($args[0]) ? (int)$args[0] : 0;
-		$formLocale = $args[1];
 		$this->validate($articleId);
+
+		$formLocale = $args[1];
+		if (!Locale::isLocaleValid($formLocale)) {
+			$request->redirect(null, null, 'viewMetadata', $articleId);
+		}
+
 		$submission =& $this->submission;
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 
 		import('classes.file.PublicFileManager');
 		$publicFileManager = new PublicFileManager();
@@ -386,7 +393,7 @@ class TrackSubmissionHandler extends AuthorHandler {
 		$articleDao =& DAORegistry::getDAO('ArticleDAO');
 		$articleDao->updateArticle($submission);
 
-		Request::redirect(null, null, 'viewMetadata', $articleId);
+		$request->redirect(null, null, 'viewMetadata', $articleId);
 	}
 
 	function uploadCopyeditVersion() {

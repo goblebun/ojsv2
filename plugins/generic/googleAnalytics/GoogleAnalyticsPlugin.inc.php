@@ -3,7 +3,7 @@
 /**
  * @file GoogleAnalyticsPlugin.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class GoogleAnalyticsPlugin
@@ -26,7 +26,7 @@ class GoogleAnalyticsPlugin extends GenericPlugin {
 	 */
 	function register($category, $path) {
 		$success = parent::register($category, $path);
-		if (!Config::getVar('general', 'installed')) return false;
+		if (!Config::getVar('general', 'installed') || defined('RUNNING_UPGRADE')) return true;
 		if ($success && $this->getEnabled()) {
 			// Insert field into author submission page and metadata form
 			HookRegistry::register('Templates::Author::Submit::Authors', array($this, 'metadataField'));

@@ -3,7 +3,7 @@
 /**
  * @file NativeImportDom.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class NativeImportDom
@@ -286,8 +286,7 @@ class NativeImportDom {
 		   --- Otherwise, the whole process was successful. */
 
 		if ($hasErrors) {
-			$issueDao->deleteIssue($issue);
-			$issue = null;
+			$issue = null; // Don't pass back a reference to a dead issue
 			if ($cleanupErrors) {
 				NativeImportDom::cleanupFailure ($dependentItems);
 			}
@@ -787,6 +786,14 @@ class NativeImportDom {
 			}
 		}
 
+		for ($index=0; ($node = $articleNode->getChildByName('id', $index)); $index++) {
+			switch ($node->getAttribute('type')) {
+				case 'doi':
+					$article->setStoredDOI($node->getValue());
+					break;
+			}
+		}
+
 		$articleDao->insertArticle($article);
 		$dependentItems[] = array('article', $article);
 
@@ -837,14 +844,6 @@ class NativeImportDom {
 		$publishedArticle = new PublishedArticle();
 		$publishedArticle->setArticleId($article->getId());
 		$publishedArticle->setIssueId($issue->getId());
-
-		for ($index=0; ($node = $articleNode->getChildByName('id', $index)); $index++) {
-			switch ($node->getAttribute('type')) {
-				case 'doi':
-					$publishedArticle->setStoredDOI($node->getValue());
-					break;
-			}
-		}
 
 		if (($node = $articleNode->getChildByName('date_published'))) {
 			$publishedDate = strtotime($node->getValue());

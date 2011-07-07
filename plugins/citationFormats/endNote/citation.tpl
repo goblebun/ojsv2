@@ -1,7 +1,7 @@
 {**
  * citation.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * EndNote citation format generator
@@ -16,7 +16,13 @@
 {foreach from=$article->getAuthors() item=author}
 %A {$author->getFullName(true)|escape}
 {/foreach}
+{if $article->getDatePublished()}
 %D {$article->getDatePublished()|date_format:"%Y"}
+{elseif $issue->getDatePublished()}
+%D {$issue->getDatePublished()|date_format:"%Y"}
+{else}
+%D {$issue->getYear()|escape}
+{/if}
 %T {$article->getLocalizedTitle()|strip_tags}
 %B {$article->getDatePublished()|date_format:"%Y"}
 %9 {$article->getLocalizedSubject()|escape}

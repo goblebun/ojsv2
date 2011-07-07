@@ -3,7 +3,7 @@
 /**
  * @file MetsExportDom.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class MetsExportDom
@@ -171,8 +171,10 @@ class MetsExportDom {
 		$modsIdentifier = XMLCustomWriter::createChildWithText($doc, $mods, 'mods:identifier', $url);
 		XMLCustomWriter::setAttribute($modsIdentifier, 'type', 'uri');
 		$modsOriginInfo =& XMLCustomWriter::createElement($doc, 'mods:originInfo');
-		$timeIssued = date("Y-m-dTH:i:sP", strtotime($issue->getDatePublished()));
-		$modsDateIssued = XMLCustomWriter::createChildWithText($doc, $modsOriginInfo, 'mods:dateIssued', $timeIssued);
+		if ($issue->getDatePublished()) {
+			$timeIssued = date("Y-m-dTH:i:sP", strtotime($issue->getDatePublished()));
+			$modsDateIssued = XMLCustomWriter::createChildWithText($doc, $modsOriginInfo, 'mods:dateIssued', $timeIssued);
+		}
 		XMLCustomWriter::appendChild($mods, $modsOriginInfo);
 		$modsRelatedItem =& XMLCustomWriter::createElement($doc, 'mods:relatedItem');
 		XMLCustomWriter::setAttribute($modsRelatedItem, 'type', 'host');
@@ -278,7 +280,7 @@ class MetsExportDom {
 			$i++;
 		}
 		XMLCustomWriter::createChildWithText($doc, $mods, 'mods:genre', 'article');
-		if($issue->getDatePublished() != ''){
+		if ($issue->getDatePublished()) {
 			$timeIssued = date("Y-m-dTH:i:sP", strtotime($issue->getDatePublished()));
 			$originInfo =& XMLCustomWriter::createElement($doc, 'mods:originInfo');
 			$sDate = XMLCustomWriter::createChildWithText($doc, $originInfo, 'mods:dateIssued', $timeIssued);
@@ -383,7 +385,7 @@ class MetsExportDom {
 		foreach ($suppFile->getDescription(null) as $locale => $description) {
 			XMLCustomWriter::createChildWithText($doc, $mods, 'mods:abstract', $description);
 		}
-		if($suppFile->getDateCreated() != ''){
+		if($suppFile->getDateCreated()){
 			$originInfo =& XMLCustomWriter::createElement($doc, 'mods:originInfo');
 			$timeIssued = date("Y-m-dTH:i:sP", strtotime($suppFile->getDateCreated()));
 			$sDate = XMLCustomWriter::createChildWithText($doc, $originInfo, 'mods:dateCreated', $timeIssued);

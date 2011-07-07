@@ -7,7 +7,7 @@
 /**
  * @file classes/form/IssueForm.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class IssueForm
@@ -353,7 +353,8 @@ class IssueForm extends Form {
 		if ($publicFileManager->uploadedFileExists('coverPage')) {
 			$journal = Request::getJournal();
 			$originalFileName = $publicFileManager->getUploadedFileName('coverPage');
-			$newFileName = 'cover_issue_' . $issueId . '_' . $this->getFormLocale() . '.' . $publicFileManager->getExtension($originalFileName);
+			$type = $publicFileManager->getUploadedFileType('coverPage');
+			$newFileName = 'cover_issue_' . $issueId . '_' . $this->getFormLocale() . $publicFileManager->getImageExtension($type);
 			$publicFileManager->uploadJournalFile($journal->getId(), 'coverPage', $newFileName);
 			$issue->setOriginalFileName($publicFileManager->truncateFileName($originalFileName, 127), $this->getFormLocale());
 			$issue->setFileName($newFileName, $this->getFormLocale());

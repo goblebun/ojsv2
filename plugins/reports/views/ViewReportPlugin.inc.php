@@ -3,7 +3,7 @@
 /**
  * @file ViewReportPlugin.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  * 
  * @class ViewReportPlugin
@@ -92,6 +92,10 @@ class ViewReportPlugin extends ReportPlugin {
 					$i = count($galleyLabels);
 					$galleyLabels[] = $label;
 				}
+
+				// Make sure the array is the same size as in previous iterations
+				//  so that we insert values into the right location
+				$galleyViews[$articleId] = array_pad($galleyViews[$articleId], count($galleyLabels), '');
 
 				$views = $galley->getViews();
 				$galleyViews[$articleId][$i] = $views;

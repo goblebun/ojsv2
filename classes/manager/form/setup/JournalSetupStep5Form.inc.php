@@ -3,7 +3,7 @@
 /**
  * @file classes/manager/form/setup/JournalSetupStep5Form.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class JournalSetupStep5Form
@@ -233,7 +233,7 @@ class JournalSetupStep5Form extends JournalSetupForm {
 		// Save the block plugin layout settings.
 		$blockVars = array('blockSelectLeft', 'blockUnselected', 'blockSelectRight');
 		foreach ($blockVars as $varName) {
-			$$varName = split(' ', Request::getUserVar($varName));
+			$$varName = array_map('urldecode', split(' ', Request::getUserVar($varName)));
 		}
 
 		$plugins =& PluginRegistry::loadCategory('blocks');

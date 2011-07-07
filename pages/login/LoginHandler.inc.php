@@ -3,7 +3,7 @@
 /**
  * @file LoginHandler.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class LoginHandler
@@ -99,6 +99,13 @@ class LoginHandler extends PKPLoginHandler {
 		} else { 
 			$mail->setFrom($site->getLocalizedContactEmail(), $site->getLocalizedContactName());
 		}
+	}
+
+	/**
+	 * Get the log in URL.
+	 */
+	function _getLoginUrl() {
+		return Request::url(null, 'login', 'signIn');
 	}
 
 	/**

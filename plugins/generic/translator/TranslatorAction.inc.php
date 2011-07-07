@@ -3,7 +3,7 @@
 /**
  * @file TranslatorAction.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class TranslatorAction
@@ -66,9 +66,11 @@ class TranslatorAction {
 	function getMiscLocaleFiles($locale) {
 		$countryDao =& DAORegistry::getDAO('CountryDAO');
 		$currencyDao =& DAORegistry::getDAO('CurrencyDAO');
+		$languageDao =& DAORegistry::getDAO('LanguageDAO');
 		return array(
 			$countryDao->getFilename($locale),
-			$currencyDao->getCurrencyFilename($locale)
+			$currencyDao->getCurrencyFilename($locale),
+			$languageDao->getLanguageFilename($locale)
 		);
 	}
 

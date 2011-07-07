@@ -3,7 +3,7 @@
 /**
  * @file CoinsPlugin.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CoinsPlugin
@@ -24,8 +24,8 @@ class CoinsPlugin extends GenericPlugin {
 	 */
 	function register($category, $path) {
 		$success = parent::register($category, $path);
-		if (!Config::getVar('general', 'installed')) return false;
-		if ($success) {
+		if (!Config::getVar('general', 'installed') || defined('RUNNING_UPGRADE')) return true;
+		if ($success && $this->getEnabled()) {
 			HookRegistry::register('Templates::Article::Footer::PageFooter', array($this, 'insertFooter'));
 		}
 		return $success;
@@ -73,7 +73,6 @@ class CoinsPlugin extends GenericPlugin {
 				array('rft.jtitle', $journal->getLocalizedTitle()),
 				array('rft.atitle', $article->getLocalizedTitle()),
 				array('rft.artnum', $article->getBestArticleId()),
-				array('rft.date', date('Y-m-d', strtotime($article->getDatePublished()))),
 				array('rft.stitle', $journal->getLocalizedSetting('abbreviation')),
 				array('rft.volume', $issue->getVolume()),
 				array('rft.issue', $issue->getNumber()),
@@ -81,6 +80,12 @@ class CoinsPlugin extends GenericPlugin {
 				array('rft.aufirst', $firstAuthor->getFirstName()),
 				array('rft.auinit', $firstAuthor->getMiddleName())
 			);
+
+			$datePublished = $article->getDatePublished();
+			if (!$datePublished) $datePublished = $issue->getDatePublished();
+			if ($datePublished) {
+				$vars[] = array('rft.date', date('Y-m-d', strtotime($datePublished)));
+			}
 
 			foreach ($authors as $author) {
 				$vars[] = array('rft.au', $author->getFullName());

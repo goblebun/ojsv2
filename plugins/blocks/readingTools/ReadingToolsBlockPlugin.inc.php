@@ -3,7 +3,7 @@
 /**
  * @file ReadingToolsBlockPlugin.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReadingToolsBlockPlugin
@@ -39,17 +39,6 @@ class ReadingToolsBlockPlugin extends BlockPlugin {
 	 */
 	function getSupportedContexts() {
 		return array(BLOCK_CONTEXT_RIGHT_SIDEBAR);
-	}
-
-	/**
-	 * Get the HTML contents for this block.
-	 * @param $templateMgr object
-	 * @return $string
-	 */
-	function getContents(&$templateMgr) {
-		$journal =& Request::getJournal();
-
-		return parent::getContents($templateMgr);
 	}
 }
 

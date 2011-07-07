@@ -3,7 +3,7 @@
 /**
  * @file classes/editor/EditorSubmissionDAO.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EditorSubmissionDAO
@@ -287,9 +287,9 @@ class EditorSubmissionDAO extends DAO {
 				LEFT JOIN users ed ON (e.editor_id = ed.user_id)
 				LEFT JOIN signoffs scf ON (a.article_id = scf.assoc_id AND scf.assoc_type = ? AND scf.symbolic = ?)
 				LEFT JOIN users ce ON (scf.user_id = ce.user_id)
-				LEFT JOIN signoffs spr ON (a.article_id = spr.assoc_id AND scf.assoc_type = ? AND spr.symbolic = ?)
+				LEFT JOIN signoffs spr ON (a.article_id = spr.assoc_id AND spr.assoc_type = ? AND spr.symbolic = ?)
 				LEFT JOIN users pe ON (pe.user_id = spr.user_id)
-				LEFT JOIN signoffs sle ON (a.article_id = sle.assoc_id AND scf.assoc_type = ? AND sle.symbolic = ?)
+				LEFT JOIN signoffs sle ON (a.article_id = sle.assoc_id AND sle.assoc_type = ? AND sle.symbolic = ?)
 				LEFT JOIN users le ON (le.user_id = sle.user_id)
 				LEFT JOIN review_assignments r ON (r.submission_id = a.article_id)
 				LEFT JOIN users re ON (re.user_id = r.reviewer_id AND cancelled = 0)
@@ -610,7 +610,7 @@ class EditorSubmissionDAO extends DAO {
 	function &getUsersNotAssignedToArticle($journalId, $articleId, $roleId, $searchType=null, $search=null, $searchMatch=null, $rangeInfo = null) {
 		$users = array();
 
-		$paramArray = array('interest', $articleId, $journalId, $roleId);
+		$paramArray = array(ASSOC_TYPE_USER, 'interest', $articleId, $journalId, $roleId);
 		$searchSql = '';
 
 		$searchTypeMap = array(
@@ -653,7 +653,7 @@ class EditorSubmissionDAO extends DAO {
 			'SELECT DISTINCT
 				u.*
 			FROM	users u
-				LEFT JOIN controlled_vocabs cv ON (cv.assoc_id = u.user_id AND cv.symbolic = ?)
+				LEFT JOIN controlled_vocabs cv ON (cv.assoc_type = ? AND cv.assoc_id = u.user_id AND cv.symbolic = ?)
 				LEFT JOIN controlled_vocab_entries cve ON (cve.controlled_vocab_id = cv.controlled_vocab_id)
 				LEFT JOIN controlled_vocab_entry_settings cves ON (cves.controlled_vocab_entry_id = cve.controlled_vocab_entry_id)
 				LEFT JOIN roles r ON (r.user_id = u.user_id)

@@ -3,7 +3,7 @@
 /**
  * @file plugins/oaiMetadataFormats/rfc1807/OAIMetadataFormat_RFC1807.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OAIMetadataFormat_RFC1807
@@ -88,7 +88,7 @@ class OAIMetadataFormat_RFC1807 extends OAIMetadataFormat {
 
 			$this->formatElement('type', $relation) .
 			$this->formatElement('author', $creators) .
-			$this->formatElement('date', $issue->getDatePublished()) .
+			($article->getDatePublished()?$this->formatElement('date', $article->getDatePublished()):'') .
 			$this->formatElement('copyright', strip_tags($journal->getLocalizedSetting('copyrightNotice'))) .
 			$this->formatElement('other_access', "url:$url") .
 			$this->formatElement('keyword', $subject) .

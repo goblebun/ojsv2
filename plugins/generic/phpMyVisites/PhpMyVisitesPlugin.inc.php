@@ -3,7 +3,7 @@
 /**
  * @file PhpMyVisitesPlugin.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PhpMyVisitesPlugin
@@ -26,8 +26,8 @@ class PhpMyVisitesPlugin extends GenericPlugin {
 	 */
 	function register($category, $path) {
 		$success = parent::register($category, $path);
-		if (!Config::getVar('general', 'installed')) return false;
-		if ($success) {
+		if (!Config::getVar('general', 'installed') || defined('RUNNING_UPGRADE')) return true;
+		if ($success && $this->getEnabled()) {
 			// Insert phpmv page tag to common footer
 			HookRegistry::register('Templates::Common::Footer::PageFooter', array($this, 'insertFooter'));
 

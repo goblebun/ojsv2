@@ -3,7 +3,7 @@
 /**
  * @file UserExportDom.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserExportDom
@@ -65,7 +65,7 @@ class UserExportDom {
 			}
 			$interestsNode =& XMLCustomWriter::createChildWithText($doc, $userNode, 'interests', $user->getInterests(), false);
 			if ($interestsNode) {
-				XMLCustomWriter::setAttribute($interestsNode, 'locale', $locale);
+				XMLCustomWriter::setAttribute($interestsNode);
 			}
 			if (is_array($user->getGossip(null))) {
 				foreach($user->getGossip(null) as $locale => $value) {

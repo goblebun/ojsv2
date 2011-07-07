@@ -7,7 +7,7 @@
 /**
  * @file classes/user/form/RegistrationForm.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RegistrationForm
@@ -159,7 +159,7 @@ class RegistrationForm extends Form {
 			'salutation', 'firstName', 'middleName', 'lastName',
 			'gender', 'initials', 'country',
 			'affiliation', 'email', 'confirmEmail', 'userUrl', 'phone', 'fax', 'signature',
-			'mailingAddress', 'biography', 'interestsKeywords', 'userLocales',
+			'mailingAddress', 'biography', 'interests', 'interestsKeywords', 'userLocales',
 			'registerAsReader', 'openAccessNotification', 'registerAsAuthor',
 			'registerAsReviewer', 'existingUser', 'sendPassword'
 		);
@@ -177,6 +177,12 @@ class RegistrationForm extends Form {
 		if ($this->getData('username') != null) {
 			// Usernames must be lowercase
 			$this->setData('username', strtolower($this->getData('username')));
+		}
+
+		$interests = $this->getData('interestsKeywords');
+		if ($interests != null && is_array($interests)) {
+			// The interests are coming in encoded -- Decode them for DB storage
+			$this->setData('interestsKeywords', array_map('urldecode', $interests));
 		}
 	}
 
@@ -227,21 +233,6 @@ class RegistrationForm extends Form {
 			$user->setDateRegistered(Core::getCurrentDate());
 			$user->setCountry($this->getData('country'));
 
-			// Add reviewing interests to interests table
-			$interestDao =& DAORegistry::getDAO('InterestDAO');
-			$interests = Request::getUserVar('interestsKeywords');
-			$interestTextOnly = Request::getUserVar('interests');
-			if(!empty($interestsTextOnly)) {
-				// If JS is disabled, this will be the input to read
-				$interestsTextOnly = explode(",", $interestTextOnly);
-			} else $interestsTextOnly = null;
-			if ($interestsTextOnly && !isset($interests)) {
-				$interests = $interestsTextOnly;
-			} elseif (isset($interests) && !is_array($interests)) {
-				$interests = array($interests);
-			}
-			$interestDao->insertInterests($interests, $user->getId(), true);
-
 			$site =& Request::getSite();
 			$availableLocales = $site->getSupportedLocales();
 
@@ -274,6 +265,11 @@ class RegistrationForm extends Form {
 			if (!$userId) {
 				return false;
 			}
+
+			// Insert the user interests
+			import('lib.pkp.classes.user.InterestManager');
+			$interestManager = new InterestManager();
+			$interestManager->insertInterests($userId, $this->getData('interestsKeywords'), $this->getData('interests'));
 
 			$sessionManager =& SessionManager::getManager();
 			$session =& $sessionManager->getUserSession();

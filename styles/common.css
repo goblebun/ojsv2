@@ -1,7 +1,7 @@
 /**
  * common.css
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Site-wide shared stylesheet.
@@ -432,6 +432,7 @@ ul.tagit {
 	border-color:#C6C6C6;
 	overflow:auto !important;
 	width:500px;
+	margin-bottom: 0px;
 }
 ul.tagit li {
 	-moz-border-radius:5px 5px 5px 5px;

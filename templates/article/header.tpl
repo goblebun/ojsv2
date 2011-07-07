@@ -1,7 +1,7 @@
 {**
  * header.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Article View -- Header component.
@@ -24,7 +24,7 @@
 	{include file="article/googlescholar.tpl"}
 	{call_hook name="Templates::Article::Header::Metadata"}
 
-	<link rel="stylesheet" href="http://localhost/dev/ojs/lib/pkp/styles/pkp.css" type="text/css" />
+	<link rel="stylesheet" href="{$baseUrl}/lib/pkp/styles/pkp.css" type="text/css" />
 	<link rel="stylesheet" href="{$baseUrl}/lib/pkp/styles/common.css" type="text/css" />
 	<link rel="stylesheet" href="{$baseUrl}/styles/common.css" type="text/css" />
 	<link rel="stylesheet" href="{$baseUrl}/styles/articleView.css" type="text/css" />
@@ -44,7 +44,7 @@
 	{/foreach}
 
 	<!-- Base Jquery -->
-	{if $allowCDN}<script src="http://www.google.com/jsapi"></script>
+	{if $allowCDN}<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	<script type="text/javascript">{literal}
 		// Provide a local fallback if the CDN cannot be reached
 		if (typeof google == 'undefined') {

@@ -1,7 +1,7 @@
 {**
  * rss2.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * RSS 2 feed template
@@ -40,7 +40,9 @@
 			<webMaster>{$journal->getSetting('supportEmail')|strip|escape:"html"}{if $journal->getSetting('contactName')} ({$journal->getSetting('supportName')|strip|escape:"html"}){/if}</webMaster>
 		{/if}
 
-		<pubDate>{$issue->getDatePublished()|date_format:"%a, %d %b %Y %T %z"}</pubDate>
+		{if $issue->getDatePublished()}
+			<pubDate>{$issue->getDatePublished()|date_format:"%a, %d %b %Y %T %z"}</pubDate>
+		{/if}
 
 		{* <lastBuildDate/> *}
 		{* <category/> *}
@@ -65,7 +67,9 @@
 					{* <source/> *}
 
 					<guid isPermaLink="true">{url page="article" op="view" path=$article->getBestArticleId($currentJournal)}</guid>
-					<pubDate>{$article->getDatePublished()|date_format:"%a, %d %b %Y %T %z"}</pubDate>
+					{if $article->getDatePublished()}
+						<pubDate>{$article->getDatePublished()|date_format:"%a, %d %b %Y %T %z"}</pubDate>
+					{/if}
 				</item>
 			{/foreach}{* articles *}
 		{/foreach}{* sections *}

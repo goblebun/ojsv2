@@ -3,7 +3,7 @@
 /**
  * @file classes/user/InterestDAO.inc.php
  *
- * Copyright (c) 2000-2010 John Willinsky
+ * Copyright (c) 2000-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class InterestDAO
@@ -22,7 +22,7 @@ define('CONTROLLED_VOCAB_INTEREST', 'interest');
 class InterestDAO extends ControlledVocabDAO {
 
 	function build($userId) {
-		return parent::build(CONTROLLED_VOCAB_INTEREST, ROLE_ID_REVIEWER, $userId);
+		return parent::build(CONTROLLED_VOCAB_INTEREST, ASSOC_TYPE_USER, $userId);
 	}
 
 	function getInterests($userId) {
@@ -68,8 +68,9 @@ class InterestDAO extends ControlledVocabDAO {
 	 */
 	function getUserIdsByInterest($interest) {
 		$result =& $this->retrieve(
-			'SELECT controlled_vocab_id
-			 FROM controlled_vocab_entries cve
+			'SELECT assoc_id
+			 FROM controlled_vocabs cv
+			 LEFT JOIN controlled_vocab_entries cve ON cv.controlled_vocab_id = cve.controlled_vocab_id
 			 INNER JOIN controlled_vocab_entry_settings cves ON cve.controlled_vocab_entry_id = cves.controlled_vocab_entry_id
 			 WHERE cves.setting_name = ? AND cves.setting_value = ?',
 			array('interest', $interest)
@@ -78,7 +79,7 @@ class InterestDAO extends ControlledVocabDAO {
 		$returner = array();
 		while (!$result->EOF) {
 			$row = $result->GetRowAssoc(false);
-			$returner[] = $row['controlled_vocab_id'];
+			$returner[] = $row['assoc_id'];
 			$result->MoveNext();
 		}
 		$result->Close();
@@ -107,6 +108,7 @@ class InterestDAO extends ControlledVocabDAO {
 			}
 		}
 
+		$interests = array_unique($interests); // Remove any duplicate interests that weren't caught by the JS validator
 		foreach ($interests as $interest) {
 			$interestEntry = $interestEntryDao->newDataObject();
 			$interestEntry->setControlledVocabId($currentInterests->getId());

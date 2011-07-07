@@ -1,7 +1,7 @@
 {**
  * step1.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Step 1 of journal setup.
@@ -74,7 +74,7 @@
 				<td width="95%" class="value">
 					{fieldLabel name="doiSuffix" key="manager.setup.doiSuffixPattern"}
 					<br />
-					<input type="text" name="doiSuffixPattern" value="{$doiSuffixPattern|escape}" size="15" maxlength="15" id="doiSuffixPattern" class="textField" />
+					<input type="text" name="doiSuffixPattern" value="{$doiSuffixPattern|escape}" size="15" maxlength="50" id="doiSuffixPattern" class="textField" />
 					<br />
 					<span class="instruct">{fieldLabel name="doiSuffixPattern" key="manager.setup.doiSuffixPattern.example"}</span>
 				</td>

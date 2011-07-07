@@ -3,7 +3,7 @@
 /**
  * @file classes/sword/OJSSwordDeposit.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OJSSwordDeposit
@@ -79,7 +79,10 @@ class OJSSwordDeposit {
 		}
 
 		foreach ($this->article->getAuthors() as $author) {
-			$this->package->addCreator($author->getFullName());
+			$creator = $author->getFullName(true);
+			$affiliation = $author->getAffiliation($this->journal->getPrimaryLocale());
+			if (!empty($affiliation)) $creator .= "; $affiliation";
+			$this->package->addCreator($creator);
 		}
 
 		// The article can be published or not. Support either.

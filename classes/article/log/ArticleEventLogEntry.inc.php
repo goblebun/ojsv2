@@ -3,7 +3,7 @@
 /**
  * @file classes/article/log/ArticleEventLogEntry.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ArticleEventLogEntry
@@ -115,6 +115,7 @@ class ArticleEventLogEntry extends DataObject {
 	 * @param $params array optional array of parameters
 	 */
 	function setLogMessage($key, $params = array()) {
+		Locale::requireComponents(array(LOCALE_COMPONENT_APPLICATION_COMMON));
 		$this->setMessage(Locale::translate($key, $params, Locale::getPrimaryLocale()));
 	}
 

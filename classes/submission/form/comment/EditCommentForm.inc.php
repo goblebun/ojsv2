@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/form/comment/EditCommentForm.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EditCommentForm
@@ -303,7 +303,7 @@ class EditCommentForm extends Form {
 			$paramArray = array(
 				'name' => $name,
 				'commentName' => $this->user->getFullName(),
-				'comments' => $this->getData('comments')	
+				'comments' => String::html2text($this->getData('comments'))
 			);
 			$email->assignParams($paramArray);
 

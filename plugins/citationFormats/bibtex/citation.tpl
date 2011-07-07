@@ -1,7 +1,7 @@
 {**
  * citation.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Article reading tools -- Capture Citation BibTeX format
@@ -17,7 +17,7 @@
 	journal = {{/literal}{$journal->getLocalizedTitle()|bibtex_escape}{literal}},
 {/literal}{if $issue}{literal}	volume = {{/literal}{$issue->getVolume()|bibtex_escape}{literal}},
 	number = {{/literal}{$issue->getNumber()|bibtex_escape}{literal}},{/literal}{/if}{literal}
-	year = {{/literal}{$article->getDatePublished()|date_format:'%Y'}{literal}},
+	year = {{/literal}{if $article->getDatePublished()}{$article->getDatePublished()|date_format:'%Y'}{elseif $issue->getDatePublished()}{$issue->getDatePublished()|date_format:'%Y'}{else}{$issue->getYear()|escape}{/if}{literal}},
 	keywords = {{/literal}{$article->getLocalizedSubject()|bibtex_escape}{literal}},
 	abstract = {{/literal}{$article->getLocalizedAbstract()|strip_tags:false|bibtex_escape}{literal}},
 {/literal}{assign var=onlineIssn value=$journal->getSetting('onlineIssn')}

@@ -3,7 +3,7 @@
 /**
  * @file classes/core/PKPApplication.inc.php
  *
- * Copyright (c) 2000-2010 John Willinsky
+ * Copyright (c) 2000-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPApplication
@@ -19,7 +19,7 @@ define('REALLY_BIG_NUMBER', 10000);
 define('ROUTE_COMPONENT', 'component');
 define('ROUTE_PAGE', 'page');
 
-define('ASSOC_TYPE_ROLE', 0x0100001);
+define('ASSOC_TYPE_USER',	0x00001000); // This value used because of bug #6068
 define('ASSOC_TYPE_USER_GROUP', 0x0100002);
 
 define('ASSOC_TYPE_CITATION', 0x0100003);

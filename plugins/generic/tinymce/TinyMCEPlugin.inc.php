@@ -3,7 +3,7 @@
 /**
  * @file plugins/generic/tinymce/TinyMCEPlugin.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class TinyMCEPlugin
@@ -91,7 +91,9 @@ class TinyMCEPlugin extends GenericPlugin {
 						break;
 				}
 				break;
-			case 'author/submitSuppFile': $fields[] = 'description'; break;
+			case 'author/submitSuppFile':
+			case 'author/saveSubmitSuppFile':
+				$fields[] = 'description'; break;
 			case 'editor/createIssue':
 			case 'editor/issueData':
 			case 'editor/editIssue':
@@ -187,7 +189,8 @@ class TinyMCEPlugin extends GenericPlugin {
 				break;
 			case 'manager/setup':
 			case 'manager/saveSetup':
-				switch (array_shift(Request::getRequestedArgs())) {
+				$args = Request::getRequestedArgs();
+				switch (array_shift($args)) {
 					case 1:
 						$fields[] = 'mailingAddress';
 						$fields[] = 'contactMailingAddress';
@@ -357,6 +360,7 @@ class TinyMCEPlugin extends GenericPlugin {
 			</script>
 			<script language="javascript" type="text/javascript">
 				tinyMCE.init({
+					entity_encoding : "raw",
 					plugins : "paste,ibrowser,fullscreen",
 					mode : "exact",
 					language : "' . String::substr(Locale::getLocale(), 0, 2) . '",

@@ -1,7 +1,7 @@
 {**
  * futureIssues.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Listings of future (unpublished) issues.
@@ -10,7 +10,7 @@
  *}
 {strip}
 {assign var="pageTitle" value="editor.issues.futureIssues"}
-{url|assign:"currentUrl" page="editor" op="issues"}
+{url|assign:"currentUrl" page="editor" op="futureIssues"}
 {include file="common/header.tpl"}
 {/strip}
 

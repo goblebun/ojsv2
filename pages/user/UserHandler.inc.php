@@ -3,7 +3,7 @@
 /**
  * @file pages/user/UserHandler.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserHandler
@@ -311,6 +311,21 @@ class UserHandler extends Handler {
 			$templateMgr->assign('message', $deniedKey);
 			return $templateMgr->display('common/message.tpl');
 		}
+	}
+
+	/**
+	 * Display an authorization denied message.
+	 * @param $args array
+	 * @param $request Request
+	 */
+	function authorizationDenied($args, &$request) {
+		$this->validate(true);
+		$authorizationMessage = htmlentities($request->getUserVar('message'));
+		$this->setupTemplate(true);
+		Locale::requireComponents(array(LOCALE_COMPONENT_PKP_USER));
+		$templateMgr =& TemplateManager::getManager();
+		$templateMgr->assign('message', $authorizationMessage);
+		return $templateMgr->display('common/message.tpl');
 	}
 
 	/**

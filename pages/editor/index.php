@@ -7,7 +7,7 @@
 /**
  * @file pages/editor/index.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @ingroup pages_editor
@@ -134,12 +134,13 @@ switch ($op) {
 	// Scheduling functions
 	//
 	case 'scheduleForPublication':
-	 //
-	 // Payments
-	 //
-	 case 'waiveSubmissionFee':
-	 case 'waiveFastTrackFee':
-	 case 'waivePublicationFee':
+	case 'setDatePublished':
+	//
+	// Payments
+	//
+	case 'waiveSubmissionFee':
+	case 'waiveFastTrackFee':
+	case 'waivePublicationFee':
 		define('HANDLER_CLASS', 'SubmissionEditHandler');
 		import('pages.sectionEditor.SubmissionEditHandler');
 		break;
@@ -174,7 +175,7 @@ switch ($op) {
 	case 'saveIssue':
 	case 'issueData':
 	case 'editIssue':
-	case 'removeCoverPage':
+	case 'removeIssueCoverPage':
 	case 'removeStyleFile':
 	case 'issueToc':
 	case 'updateIssueToc':

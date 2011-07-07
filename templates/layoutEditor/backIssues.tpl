@@ -1,7 +1,7 @@
 {**
  * backIssues.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Listings of back issues
@@ -37,7 +37,7 @@
 	{iterate from=issues item=issue}
 	<tr valign="top">
 		<td><a href="{url op="issueToc" path=$issue->getId()}" class="action">{$issue->getIssueIdentification()|escape}</a></td>
-		<td>{$issue->getDatePublished()|date_format:"$dateFormatShort"}</td>
+		<td>{$issue->getDatePublished()|date_format:"$dateFormatShort"|default:"&mdash;"}</td>
 		<td>{$issue->getNumArticles()|escape}</td>
 	</tr>
 	<tr>

@@ -3,7 +3,7 @@
 /**
  * @file UserImportExportPlugin.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserImportExportPlugin
@@ -129,7 +129,7 @@ class UserImportExportPlugin extends ImportExportPlugin {
 					$newUser->setLocales($locales);
 					$newUser->setSignature(Request::getUserVar($i.'_signature'), null);
 					$newUser->setBiography(Request::getUserVar($i.'_biography'), null);
-					$newUser->setInterests(Request::getUserVar($i.'_interests'), null);
+					$newUser->setTemporaryInterests(Request::getUserVar($i.'_interests'));
 					$newUser->setGossip(Request::getUserVar($i.'_gossip'), null);
 					$newUser->setCountry(Request::getUserVar($i.'_country'));
 					$newUser->setMailingAddress(Request::getUserVar($i.'_mailingAddress'));

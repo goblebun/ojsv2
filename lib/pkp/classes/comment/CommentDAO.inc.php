@@ -3,7 +3,7 @@
 /**
  * @file classes/comment/CommentDAO.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CommentDAO
@@ -158,7 +158,7 @@ class CommentDAO extends DAO {
 
 		if (!HookRegistry::call('CommentDAO::_returnCommentFromRow', array(&$comment, &$row, &$childLevels))) {
 			if ($childLevels>0) $comment->setChildren($this->getCommentsByParentId($row['comment_id'], $childLevels-1));
-			else if ($childLevels==ARTICLE_COMMENT_RECURSE_ALL) $comment->setChildren($this->getCommentsByParentId($row['comment_id'], ARTICLE_COMMENT_RECURSE_ALL));
+			else if ($childLevels==SUBMISSION_COMMENT_RECURSE_ALL) $comment->setChildren($this->getCommentsByParentId($row['comment_id'], SUBMISSION_COMMENT_RECURSE_ALL));
 		}
 
 		return $comment;

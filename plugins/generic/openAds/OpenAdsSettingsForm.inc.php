@@ -3,7 +3,7 @@
 /**
  * @file OpenAdsSettingsForm.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OpenAdsSettingsForm
@@ -57,6 +57,8 @@ class OpenAdsSettingsForm extends Form {
 		$this->setData('headerAdOrientation', $plugin->getSetting($journalId, 'headerAdOrientation'));
 		$this->setData('sidebarAdId', $plugin->getSetting($journalId, 'sidebarAdId'));
 		$this->setData('contentAdId', $plugin->getSetting($journalId, 'contentAdId'));
+
+		$this->setData('pluginName', $plugin->getName());
 	}
 
 	/**

@@ -7,7 +7,7 @@
 /**
  * @file classes/file/FileManager.inc.php
  *
- * Copyright (c) 2000-2010 John Willinsky
+ * Copyright (c) 2000-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FileManager
@@ -426,6 +426,7 @@ class FileManager {
 				return '.png';
 			case 'image/vnd.microsoft.icon':
 			case 'image/x-icon':
+			case 'image/x-ico':
 			case 'image/ico':
 				return '.ico';
 			case 'application/x-shockwave-flash':
@@ -433,7 +434,6 @@ class FileManager {
 			case 'video/x-flv':
 			case 'application/x-flash-video':
 			case 'flv-application/octet-stream':
-			case 'application/octet-stream':
 				return '.flv';
 			case 'audio/mpeg':
 				return '.mp3';

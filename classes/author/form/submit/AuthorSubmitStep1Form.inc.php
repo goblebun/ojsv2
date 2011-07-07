@@ -3,7 +3,7 @@
 /**
  * @file classes/author/form/submit/AuthorSubmitStep1Form.inc.php
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthorSubmitStep1Form
@@ -100,11 +100,12 @@ class AuthorSubmitStep1Form extends AuthorSubmitForm {
 			$supportedSubmissionLocales = $journal->getSetting('supportedSubmissionLocales');
 			// Try these locales in order until we find one that's
 			// supported to use as a default.
+			$fallbackLocales = array_keys($supportedSubmissionLocales);
 			$tryLocales = array(
 				$this->getFormLocale(), // Current form locale
 				Locale::getLocale(), // Current UI locale
 				$journal->getPrimaryLocale(), // Journal locale
-				$supportedSubmissionLocales[array_shift(array_keys($supportedSubmissionLocales))] // Fallback: first one on the list
+				$supportedSubmissionLocales[array_shift($fallbackLocales)] // Fallback: first one on the list
 			);
 			$this->_data = array();
 			foreach ($tryLocales as $locale) {

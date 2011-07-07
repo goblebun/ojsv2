@@ -1,7 +1,7 @@
 {**
  * siteMap.tpl
  *
- * Copyright (c) 2003-2010 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * About the Journal / Site Map.
@@ -48,7 +48,7 @@
 					{else}
 						<ul class="plain">
 							<li><a href="{url journal=$currentJournal->getPath() page="login"}">{translate key="navigation.login"}</a></li>
-							<li><a href="{url journal=$currentJournal->getPath() page="register"}">{translate key="navigation.register"}</a></li>
+							<li><a href="{url journal=$currentJournal->getPath() page="user" op="register"}">{translate key="navigation.register"}</a></li>
 						</ul>
 					{/if}
 				</li>

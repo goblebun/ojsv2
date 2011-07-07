@@ -4,7 +4,7 @@
 <!--
   * comments.xml
   *
-  * Copyright (c) 2000-2010 John Willinsky
+  * Copyright (c) 2000-2011 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Comments schema in XML.
@@ -46,6 +46,9 @@
 		<descr>Reader comments on articles.</descr>
 		<index name="comments_submission_id">
 			<col>submission_id</col>
+		</index>
+		<index name="comments_parent_comment_id">
+			<col>parent_comment_id</col>
 		</index>
 		<index name="comments_user_id">
 			<col>user_id</col>
