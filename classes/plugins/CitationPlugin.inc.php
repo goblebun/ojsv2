@@ -100,7 +100,7 @@ class CitationPlugin extends Plugin {
 		$templateMgr->assign_by_ref('article', $article);
 		$templateMgr->assign_by_ref('issue', $issue);
 		$templateMgr->assign_by_ref('journal', $journal);
-		return $templateMgr->fetch($this->getTemplatePath() . '/citation.tpl');
+		return $templateMgr->fetch('/var/www/ojs/plugins/citationFormats/mla/citation.tpl');
 	}
 }
 
