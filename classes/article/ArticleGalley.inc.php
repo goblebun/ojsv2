@@ -105,8 +105,8 @@ class ArticleGalley extends ArticleFile {
 	function getGalleyLabel() {
 		$label = $this->getLabel();
 		if ($this->getLocale() != Locale::getLocale()) {
-			$locales = Locale::getAllLocales();
-			$label .= ' (' . $locales[$this->getLocale()] . ')';
+	//		$locales = Locale::getAllLocales();
+	//		$label .= ' (' . $locales[$this->getLocale()] . ')';
 		}
 		return $label;
 	}

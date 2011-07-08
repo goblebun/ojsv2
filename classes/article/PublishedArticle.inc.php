@@ -283,12 +283,25 @@ class PublishedArticle extends Article {
 				$suffixPattern = String::regexp_replace('/%j/', String::strtolower($journal->getLocalizedSetting('initials')), $suffixPattern);
 				// %v - volume number
 				$suffixPattern = String::regexp_replace('/%v/', $issue->getVolume(), $suffixPattern);
+/*				ADAPTADO UPV-> otros patrones de doi*/
+                                // %ii - issue number (at least two digit number, padding with zeros when necessary)
+                                $suffixPattern = String::regexp_replace('/%ii/', sprintf("%02s", $issue->getNumber()), $suffixPattern);
 				// %i - issue number
 				$suffixPattern = String::regexp_replace('/%i/', $issue->getNumber(), $suffixPattern);
+                                // %y - issue year
+                                $suffixPattern = String::regexp_replace('/%y/', $issue->getYear(), $suffixPattern);
+                                // %aa - article id (at least two digit number, padding with zeros when necessary)
+                                $suffixPattern = String::regexp_replace('/%aa/', sprintf("%02s",$this->getArticleId()), $suffixPattern);
 				// %a - article id
 				$suffixPattern = String::regexp_replace('/%a/', $this->getArticleId(), $suffixPattern);
 				// %p - page number
 				$suffixPattern = String::regexp_replace('/%p/', $this->getPages(), $suffixPattern);
+                                // %ss - article seq (at least two digit number, padding with zeros when necessary)
+                                $suffixPattern = String::regexp_replace('/%ss/', sprintf("%02s", $this->getSeq()), $suffixPattern);
+                                // %s - article seq
+                                $suffixPattern = String::regexp_replace('/%s/', $this->getSeq(), $suffixPattern);
+                                $suffixPattern = String::regexp_replace('/%z/', $this->getPublicArticleId(), $suffixPattern);
+
 				$doi = $doiPrefix . '/' . $suffixPattern;
 				break;
 			default:
