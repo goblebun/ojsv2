@@ -73,36 +73,6 @@
 	<div id="articleTitle"><h3>{$article->getLocalizedTitle()|strip_unsafe_html}</h3></div>
 	<div id="authorString"><em>{$article->getAuthorString()|escape}</em></div>
 	<br />
-	{if $article->getLocalizedAbstract()}
-		<div id="articleAbstract">
-		<h4>{translate key="article.abstract"}</h4>
-		<br />
-		<div>{$article->getLocalizedAbstract()|strip_unsafe_html|nl2br}</div>
-		<br />
-		</div>
-	{/if}
-
-	{if $article->getLocalizedSubject()}
-		<div id="articleSubject">
-		<h4>{translate key="article.subject"}</h4>
-		<br />
-		<div>{$article->getLocalizedSubject()|escape}</div>
-		<br />
-		</div>
-	{/if}
-
-	{if $citationFactory->getCount()}
-		<div id="articleCitations">
-		<h4>{translate key="submission.citations"}</h4>
-		<br />
-		<div>
-			{iterate from=citationFactory item=citation}
-				<p>{$citation->getRawCitation()|strip_unsafe_html}</p>
-			{/iterate}
-		</div>
-		<br />
-		</div>
-	{/if}
 
 	{if (!$subscriptionRequired || $article->getAccessStatus() == $smarty.const.ARTICLE_ACCESS_OPEN || $subscribedUser || $subscribedDomain)}
 		{assign var=hasAccess value=1}
@@ -134,6 +104,36 @@
 			&nbsp;<a href="{url page="about" op="subscriptions"}" target="_parent">{translate key="reader.subscribersOnly"}</a>
 		{/if}
 	{/if}
+	
+	
+	
+	
+	{if $article->getLocalizedAbstract()}
+		<div id="articleAbstract">
+		<h4>{translate key="article.abstract"}</h4>
+		<br />
+		<div>{$article->getLocalizedAbstract()|strip_unsafe_html|nl2br}</div>
+		<br />
+		</div>
+	{/if}
+
+	{if $citationFactory}
+		<h4>{translate key="submission.citations"}</h4>
+		<br />
+		<div>
+			{iterate from=citationFactory item=citation}
+				<p>{$citation->getRawCitation()|strip_unsafe_html}</p>
+			{/iterate}
+		</div>
+		<br />
+	{/if}
+
+	{if (!$subscriptionRequired || $article->getAccessStatus() == $smarty.const.ARTICLE_ACCESS_OPEN || $subscribedUser || $subscribedDomain)}
+		{assign var=hasAccess value=1}
+	{else}
+		{assign var=hasAccess value=0}
+	{/if}
+
 {/if}
 
 {include file="article/comments.tpl"}
