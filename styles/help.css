@@ -13,6 +13,8 @@
  * Misc
  */
 
+body { background:none;}
+
 #header h1 {
 	width: 100%;
 }
@@ -32,11 +34,12 @@
 
 #body {
 	width: 100%;
+	
 }
 
 #main {
 	float: left;
-	width:58%;
+	width:65%;
 	height: 100%;
 	margin-left: 5%;
 }
@@ -44,7 +47,7 @@
 /* hack to set width for non-IE browsers to to a percentage 
    width of container (like it should be), not the window */
 html>body #main {
-	width: 68%;
+	width: 50%;
 } 
 
 #main h4 {
@@ -86,6 +89,15 @@ span.blockTitle {
  * Sidebar
  */
 
+
+#sidebar {
+ float: right;
+    font-size: 1.0em;
+    height: 100%;
+    margin-right: 10%;
+    padding: 1em;
+    width: 20%;
+	}
 #sidebar div.block span.blockTitle {
 	font-family: Georgia,'Times New Roman',Times,serif;
 }
