@@ -25,6 +25,7 @@ body {
 	text-indent: 0!important;
 }
 
+/*
 #content div {
 	width: 100%;
 	float: none;
@@ -36,9 +37,12 @@ body {
 	padding: 0!important;
 	width: auto!important;
 }
+*/
 
 #homepageImage img {
 	margin: 0;
 	border: 0;
 	text-align: left;
 }
+
+

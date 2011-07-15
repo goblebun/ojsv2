@@ -10,7 +10,6 @@
  */
 
 #body {
-	width: 95%;
 	margin: 0 auto;
 }
 
@@ -19,7 +18,7 @@
 }
 
 #main {
-	width: 100%;
+	width: 780px!important;
 	margin: 0;
 }
 

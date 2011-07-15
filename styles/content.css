@@ -1,7 +1,7 @@
 /**
  * content.css
  *
- * Copyright (c) 2003-2011 John Willinsky
+ * Copyright (c) 2000-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Temporary file based on OMP's content.css for early introduction of
@@ -452,7 +452,7 @@ a.uploaded {
 
 .composite-ui div.two-pane>div.left-pane,
 .composite-ui div.two-pane>div.right-pane {
-	float: left;
+	float: left!important;
 }
 
 .composite-ui div.two-pane>div.left-pane {
@@ -745,3 +745,6 @@ a.uploaded {
 	right: 30px;
 }
 /* @end */
+
+
+#content #citationEditorTabEdit .pane, #content #citationEditorTabEdit .splitbarV  {float: left!important;}
